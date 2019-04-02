@@ -11,6 +11,8 @@ const ticketSchema = new mongoose.Schema({
   problem: String,
 });
 
+const auth = require("./auth.js");
+
 const Ticket = mongoose.model('Ticket', ticketSchema);
 
 router.get('/', async (req, res) => {
@@ -37,7 +39,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth.verifyToken, async (req, res) => {
   try {
     await Ticket.deleteOne({
       _id: req.params.id
